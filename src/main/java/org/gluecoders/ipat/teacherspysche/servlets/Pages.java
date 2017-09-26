@@ -2,7 +2,8 @@ package org.gluecoders.ipat.teacherspysche.servlets;
 
 public enum Pages {
 
-    GENERIC_ERROR("");
+    ONBOARD_SUCCESS(""),
+    TEST_PAGE("");
 
     private final String htmlPage;
 

@@ -2,7 +2,6 @@ package org.gluecoders.ipat.teacherspysche.servlets;
 
 import org.gluecoders.ipat.teacherspysche.db.StaffMemberDao;
 import org.gluecoders.ipat.teacherspysche.exceptions.ResourceAlreadyExistsException;
-import org.gluecoders.ipat.teacherspysche.exceptions.ValidationException;
 import org.gluecoders.ipat.teacherspysche.models.StaffMember;
 import org.gluecoders.ipat.teacherspysche.usecases.OnboardStaffMember;
 import org.gluecoders.ipat.teacherspysche.validators.OnboardStaffMemberValidator;
@@ -13,11 +12,10 @@ public class OnboardServlet extends HttpServlet<StaffMember> {
 
     private static final Logger log = Logger.getLogger(HttpServlet.class.getName());
     private final OnboardStaffMember usecase;
-    private final OnboardStaffMemberValidator validator;
 
     public OnboardServlet() {
+        super(new OnboardStaffMemberValidator());
         usecase = new OnboardStaffMember(new StaffMemberDao());
-        validator = new OnboardStaffMemberValidator();
     }
 
     @Override
@@ -26,11 +24,14 @@ public class OnboardServlet extends HttpServlet<StaffMember> {
     }
 
     @Override
-    public void handleRequest(StaffMember staffMember) throws ValidationException, ResourceAlreadyExistsException {
+    public void handleRequest(StaffMember staffMember) throws ResourceAlreadyExistsException {
         log.info("Handling onboarding request");
-        validator.validate(staffMember);
-        log.info("Validation passed");
         usecase.onboard(staffMember);
         log.info("User onboarded");
+    }
+
+    @Override
+    public Pages getSuccessPage() {
+        return Pages.ONBOARD_SUCCESS;
     }
 }
