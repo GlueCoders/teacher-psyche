@@ -23,21 +23,18 @@ public class AuthenticateTestLink {
     }
 
     public String authenticate(String uniqueIdToken) throws ValidationException, ResourceAlreadyExistsException {
-        log.info("Authenticating token "+uniqueIdToken);
+        log.info("Authenticating token " + uniqueIdToken);
         StaffMember member = getByToken(uniqueIdToken);
-        log.info("Got member "+member.getEmail());
-        if (hasNotAppearedForTest(member)) {
-            log.info("Generating id for member "+member.getEmail());
+        log.info("Got member " + member.getEmail());
+        if (member.hasNotAppearedForTest()) {
+            log.info("Generating id for member " + member.getEmail());
             return generateId(member);
-        }else{
-            log.info("Member has already given test "+member.getEmail());
+        } else {
+            log.info("Member has already given test " + member.getEmail());
             throw new ResourceAlreadyExistsException("Member has already given test");
         }
     }
 
-    private boolean hasNotAppearedForTest(StaffMember member) {
-        return !member.isTakenQuiz();
-    }
 
     private String generateId(StaffMember member) {
         return CryptoUtil.encrypt(member.getEmail());
@@ -45,8 +42,8 @@ public class AuthenticateTestLink {
 
     private StaffMember getByToken(String token) throws ValidationException {
         StaffMember member = staffMemberDao.getByToken(token);
-        if(member == null){
-            log.info("Member is null for token "+token);
+        if (member == null) {
+            log.info("Member is null for token " + token);
             throw new ValidationException("Member is null");
         }
         return member;

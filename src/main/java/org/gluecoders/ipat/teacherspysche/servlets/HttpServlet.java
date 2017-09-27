@@ -4,7 +4,6 @@ import com.google.common.io.CharStreams;
 import org.gluecoders.ipat.teacherspysche.exceptions.ResourceAlreadyExistsException;
 import org.gluecoders.ipat.teacherspysche.exceptions.ValidationException;
 import org.gluecoders.ipat.teacherspysche.helpers.JsonHelper;
-import org.gluecoders.ipat.teacherspysche.models.TestLink;
 import org.gluecoders.ipat.teacherspysche.validators.Validator;
 
 import javax.servlet.ServletException;
@@ -66,13 +65,13 @@ public abstract class HttpServlet<T> extends javax.servlet.http.HttpServlet {
         }
     }
 
-    public abstract Class<T> getRequestType();
-
-    public abstract void handleRequest(T t)throws ResourceAlreadyExistsException;
-
     protected void handleRequest(T t, HttpServletRequest req,HttpServletResponse resp) throws ResourceAlreadyExistsException, ValidationException {
         handleRequest(t);
     }
+
+    public abstract void handleRequest(T t)throws ResourceAlreadyExistsException, ValidationException;
+
+    public abstract Class<T> getRequestType();
 
     public abstract Pages getSuccessPage();
 }

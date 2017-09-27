@@ -83,4 +83,8 @@ public class StaffMember {
     public void setMobile(String mobile) {
         this.mobile = mobile;
     }
+
+    public boolean hasNotAppearedForTest() {
+        return !this.isTakenQuiz();
+    }
 }
